@@ -1,8 +1,8 @@
 from datetime import datetime
 from bs4 import BeautifulSoup
-import requests, os
+import requests, os, json
 import pandas as pd
-import os,json
+
 
 GENERAL_WEBHOOK_SECRET_DEV="*****************************************************"
 HOOK_URL = "https://hooks.slack.com/services/%s" % GENERAL_WEBHOOK_SECRET_DEV
