@@ -6,7 +6,7 @@ import os,json
 
 GENERAL_WEBHOOK_SECRET_DEV="*****************************************************"
 HOOK_URL = "https://hooks.slack.com/services/%s" % GENERAL_WEBHOOK_SECRET_DEV
-current_dateTime = str(datetime.now()).split(" ")[0].split("-")[2]
+current_datetime = str(datetime.now()).split(" ")[0].split("-")[2]
 nl = '\n'
 
 class BankingCircle:
@@ -28,7 +28,7 @@ class BankingCircle:
                 incident_date_parse=str(element.find_all("small")[0]).split(" ")
                 incident_date=incident_date_parse[14].split(">")[1].split("<")[0]
                 #incedent detected and preparing the notification, incident message notification will be modified to the user friendly message
-                if incident_date == current_dateTime:
+                if incident_date == current_datetime:
                     self.incident_detected.append([incident_statuses,
                                                     incident_date_parse[12],
                                                     incident_date_parse[14].split(">")[1].split("<")[0], 
