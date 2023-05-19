@@ -18,7 +18,7 @@ class BankingCircle:
     # save link for scraping, not nessesary to have it  
     def get_link(self):
         return self.link
-    #parce web page to detect if there was an incident at the moment
+    #parse web page to detect if there was an incident at the moment
     def detect_incident(self):
         results_incidents_containers_list = self.soup.find_all("div", class_="incidents-list format-expanded")
         for element in results_incidents_containers_list:
