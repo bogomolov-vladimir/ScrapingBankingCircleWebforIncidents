@@ -22,8 +22,8 @@ class BankingCircle:
     def detect_incident(self):
         results_incidents_containers_list = self.soup.find_all("div", class_="incidents-list format-expanded")
         for element in results_incidents_containers_list:
-            validating_for_incident_recodrs =str(element.find_all("strong")[0]).split("<")[1].split(">")[0]
-            if "strong" in validating_for_incident_recodrs:
+            validating_for_incident_records =str(element.find_all("strong")[0]).split("<")[1].split(">")[0]
+            if "strong" in validating_for_incident_records:
                 incident_statuses = element.find_all("strong")[0].string
                 incident_date_parse=str(element.find_all("small")[0]).split(" ")
                 incident_date=incident_date_parse[14].split(">")[1].split("<")[0]
