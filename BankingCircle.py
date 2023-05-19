@@ -30,10 +30,11 @@ class BankingCircle:
                 #incedent detected and preparing the notification, incident message notification will be modified to the user friendly message
                 if incident_date == current_datetime:
                     self.incident_detected.append([incident_statuses,
-                                                    incident_date_parse[12],
-                                                    incident_date_parse[14].split(">")[1].split("<")[0], 
-                                                    incident_date_parse[16].split(">")[1].split("<")[0],
-                                                    str(datetime.now()).split(" ")[0].split("-")[0]])
+                                                   incident_date_parse[12],
+                                                   incident_date_parse[14].split(">")[1].split("<")[0], 
+                                                   incident_date_parse[16].split(">")[1].split("<")[0],
+                                                   str(datetime.now()).split(" ")[0].split("-")[0],
+                                                   element.find_all("span", class_="whitespace-pre-wrap")[0].string])
                     return self.incident_detected[0]
 #making valid fotmat for Slack
 def prepare_notification_for_slack(data):
@@ -42,7 +43,7 @@ def prepare_notification_for_slack(data):
 #sending message to slack
 def sending_incident_notificarion(data):
     if data != None:
-        results = pd.DataFrame(data).T.rename(columns={0:"Status", 1:"Month", 2:"Date", 3:"Time", 4:"Year"})
+        results = pd.DataFrame(data).T.rename(columns={0:"Status", 1:"Month", 2:"Date", 3:"Time", 4:"Year", 5:"Comments"})
         prepare_notification_for_slack(f"<!subteam******> BankingCircle Incident Notification {nl}{results}")
 
     else:
