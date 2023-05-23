@@ -5,7 +5,7 @@ import pandas as pd
 import os, json, time
 
 
-GENERAL_WEBHOOK_SECRET_DEV="**************************************"
+GENERAL_WEBHOOK_SECRET_DEV="**********"
 HOOK_URL = "https://hooks.slack.com/services/%s" % GENERAL_WEBHOOK_SECRET_DEV
 current_dateTime = str(datetime.now()).split(" ")[0].split("-")[2]
 nl = '\n'
@@ -35,10 +35,10 @@ class BankingCircle:
             if data != None:
                 #results = pd.DataFrame(data).T.rename(columns={0:"Status", 1:"Month", 2:"Date", 3:"Time", 4:"Year", 5:"Comments"})
                 results = data #this looks better in Slack
-                prepare_notification_for_slack(f"<!subteam*****************> BankingCircle Incident Notification {nl}{results}")
+                prepare_notification_for_slack(f"<!subteam**********> BankingCircle Incident Notification {nl}{results}")
 
             else:
-                print("No Incidents reported today!")
+                prepare_notification_for_slack(f"<!subteam**********> BankingCircle Incident Notification {nl} No Incidents reported today!")
 
         incident_content=self.soup.find_all("div", class_="status-day font-regular")
         incident_comments=incident_content[0].find_all("span", class_="whitespace-pre-wrap")
@@ -47,8 +47,8 @@ class BankingCircle:
         month=str(self.soup.find_all("div", class_="date border-color font-large")).split(" ")[3].split(">")[1]
 
         for idx in range(len(incident_comments)):
-            #if to_string(date) == current_dateTime and len(incident_status) >= 1:
-            if to_string(date) == "16" and len(incident_status) >= 1:
+            if to_string(date) == current_dateTime and len(incident_status) >= 1:
+            #if to_string(date) == "16" and len(incident_status) >= 1:
             #creating varaibles per incident time updates
                 comments=[]
                 time=incident_content[0].find_all("small")[idx].find_all("var", "var-data"=="date")[1]
