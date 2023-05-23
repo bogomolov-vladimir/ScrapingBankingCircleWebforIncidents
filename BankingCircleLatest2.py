@@ -31,12 +31,12 @@ class BankingCircle:
         def sending_incident_notificarion(data):
             if data != None:
                 #results = pd.DataFrame(data).T.rename(columns={0:"Status", 1:"Month", 2:"Date", 3:"Time", 4:"Year", 5:"Comments"})
-                results = data
+                results = data #this looks better in Slack
                 prepare_notification_for_slack(f"<!subteam^******************> BankingCircle Incident Notification {nl}{results}")
 
             else:
                 print("No Incidents reported today!")
-                
+        #creating varaibles        
         incident_content=self.soup.find_all("div", class_="status-day font-regular")
         incident_comments=incident_content[0].find_all("span", class_="whitespace-pre-wrap")
         incident_status=incident_content[0].find_all("strong")
@@ -47,6 +47,7 @@ class BankingCircle:
         for idx in range(len(incident_comments)):
             #incedent detected and preparing the notification, incident message notification will be modified to the user friendly message
             if to_string(date) == current_dateTime and len(incident_status) >= 1:
+                #creating varaibles per incident time updates
                 time=incident_content[0].find_all("small")[idx].find_all("var", "var-data"=="date")[1]
                 year=incident_content[0].find_all("div", class_="date border-color font-large")[0].find_all("var", "var-data"=="year")[1]
                 if incident_comments[idx].string != None:
