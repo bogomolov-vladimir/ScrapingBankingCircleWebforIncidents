@@ -51,13 +51,6 @@ class BankingCircle:
                                      to_string(time),
                                      to_string(year),
                                      str(incident_comments[idx]).split("</br></span>")[0].replace("<br>", f"{nl}").split(">")[1]])
-
-                print(pd.DataFrame(comments[0]).T.rename(columns={0:"Status",
-                                                                  1:"Month",
-                                                                  2:"Date",
-                                                                  3:"Time",
-                                                                  4:"Year",
-                                                                  5:"Comments"}))
         
         return comments[0]
 
