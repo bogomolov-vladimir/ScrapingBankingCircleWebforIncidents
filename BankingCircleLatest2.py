@@ -2,25 +2,28 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import requests, os
 import pandas as pd
-import os,json
+import os, json, time
 
-GENERAL_WEBHOOK_SECRET_DEV="****************************************"
+
+GENERAL_WEBHOOK_SECRET_DEV="**************************************"
 HOOK_URL = "https://hooks.slack.com/services/%s" % GENERAL_WEBHOOK_SECRET_DEV
 current_dateTime = str(datetime.now()).split(" ")[0].split("-")[2]
 nl = '\n'
 
-class BankingCircle:
+
     
+class BankingCircle:
+
     def __init__(self, link):
         self.link = link
         self.soup = BeautifulSoup(requests.get(self.link).text, 'html.parser')
         self.incident_detected = []
-    # save link for scraping, not nessesary to have it      
+     # save link for scraping, not nessesary to have it      
     def get_link(self):
         return self.link
     #parse web page to detect if there was an incident at the moment
     def detect_incident(self):
-        
+
         def to_string(data):
             return data.string
         #making valid fotmat for Slack
@@ -32,22 +35,22 @@ class BankingCircle:
             if data != None:
                 #results = pd.DataFrame(data).T.rename(columns={0:"Status", 1:"Month", 2:"Date", 3:"Time", 4:"Year", 5:"Comments"})
                 results = data #this looks better in Slack
-                prepare_notification_for_slack(f"<!subteam^******************> BankingCircle Incident Notification {nl}{results}")
+                prepare_notification_for_slack(f"<!subteam*****************> BankingCircle Incident Notification {nl}{results}")
 
             else:
                 print("No Incidents reported today!")
-        #creating varaibles        
+
         incident_content=self.soup.find_all("div", class_="status-day font-regular")
         incident_comments=incident_content[0].find_all("span", class_="whitespace-pre-wrap")
         incident_status=incident_content[0].find_all("strong")
         date=to_string(self.soup.find_all("small")[0].find_all("var", "var-data"=="date")[0])
         month=str(self.soup.find_all("div", class_="date border-color font-large")).split(" ")[3].split(">")[1]
-        comments=[]
-        
+
         for idx in range(len(incident_comments)):
-            #incedent detected and preparing the notification, incident message notification will be modified to the user friendly message
-            if to_string(date) == current_dateTime and len(incident_status) >= 1:
-                #creating varaibles per incident time updates
+            #if to_string(date) == current_dateTime and len(incident_status) >= 1:
+            if to_string(date) == "16" and len(incident_status) >= 1:
+            #creating varaibles per incident time updates
+                comments=[]
                 time=incident_content[0].find_all("small")[idx].find_all("var", "var-data"=="date")[1]
                 year=incident_content[0].find_all("div", class_="date border-color font-large")[0].find_all("var", "var-data"=="year")[1]
                 if incident_comments[idx].string != None:
@@ -57,7 +60,7 @@ class BankingCircle:
                                      to_string(time),
                                      to_string(year),
                                      to_string(incident_comments[idx])])
-            
+
                 elif incident_comments[idx].string == None:
                     comments.append([to_string(incident_status[idx]),
                                      month,
@@ -66,9 +69,13 @@ class BankingCircle:
                                      to_string(year),
                                      str(incident_comments[idx]).split("</br></span>")[0].replace("<br>", f"{nl}").split(">")[1]])
                     
-            else:
-                print("No Incidents reported today!")
-            
-            sending_incident_notificarion(comments[0])
+                sending_incident_notificarion(comments[0])
 
-BankingCircle('https://bankingcircleconnect.statuspage.io/#past-incidents').detect_incident()
+def job():
+   # executing the task every 30 seconds
+    BankingCircle('https://bankingcircleconnect.statuspage.io/#past-incidents').detect_incident()
+
+if __name__ == '__main__':
+    while True:
+        job()
+        time.sleep(30)
