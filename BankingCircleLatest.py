@@ -26,9 +26,8 @@ class BankingCircle:
             if "strong" in validating_for_incident_recodrs:
                 incident_statuses = element.find_all("strong")[0].string
                 incident_date_parse=str(element.find_all("small")[0]).split(" ")
-                incident_date=incident_date_parse[14].split(">")[1].split("<")[0]
                 var_data=element.find_all("small")[0].find_all("var", "var-data"=="date")
-                if incident_date == current_dateTime:
+                if var_data[0].string == current_dateTime:
                     self.incident_detected.append([incident_statuses,
                                                    incident_date_parse[12],
                                                    var_data[0].string,
