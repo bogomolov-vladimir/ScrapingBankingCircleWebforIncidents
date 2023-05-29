@@ -7,7 +7,7 @@ import os, json, time
 
 """CORRECT RESULT"""
 
-GENERAL_WEBHOOK_SECRET_DEV="T3DS9S2HF/B03MZEDUYAF/ryrzAGxVofwLRm57FgyDTRQt"
+GENERAL_WEBHOOK_SECRET_DEV="***********************************"
 HOOK_URL = "https://hooks.slack.com/services/%s" % GENERAL_WEBHOOK_SECRET_DEV
 current_dateTime = str(datetime.now()).split(" ")[0].split("-")[2]
 nl = '\n'
@@ -64,7 +64,7 @@ def prepare_notification_for_slack(data):
 
 def sending_incident_notificarion(data):
     if data != None:
-        prepare_notification_for_slack(f"<!subteam^S04QLK720LC> BankingCircle Incident Notification {nl}{data}")           
+        prepare_notification_for_slack(f"<!subteam******************> BankingCircle Incident Notification {nl}{data}")           
                               
 def job():
    # executing the task every 30 seconds
